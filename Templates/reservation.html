@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="keywords" content="nightclub, club, html, css, javascript,">
     <meta name="dev-team" content="Gaseri">
-    <link rel="stylesheet" href="../Style/reservationcode.css">
+    <link rel="stylesheet" href="../static/css/reservationcode.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
@@ -22,17 +22,17 @@
 <body class=bg>
   <header class="header">
     <!-- Logo picture with link to the home page -->
-    <h1 class="logo"><a href="index.html"><img src="../Images/Homepage images/LogoMakr (1).png"></a></h1>
+    <h1 class="logo"><a href="{{ url_for('index') }}"><img src="../static/images/LogoMakr (1).png"></a></h1>
     <ul class="main-nav">
         <!-- Contact button sends the user to the contact us form -->
         <li class="nav_txt"><a href="#kontakt">
             <button class="contact_button">KONTAKT</button>
         </a></li>
-        <li class="nav_txt"><a href="aboutus.html">O NAMA</a></li>
+        <li class="nav_txt"><a href="{{ url_for('about_us') }}">O NAMA</a></li>
         <!-- Gallery button sends the user to the page with the gallery -->
-        <li class="nav_txt"><a href="gallery.html">GALERIJA</a></li>
-        <li class="nav_txt"><a href="reservation.html">REZERVACIJA</a></li>
-        <li class="nav_txt"><a href="events.html">DOGAĐAJI</a></li>
+        <li class="nav_txt"><a href="{{ url_for('gallery') }}">GALERIJA</a></li>
+        <li class="nav_txt"><a href="{{ url_for('reservation') }}">REZERVACIJA</a></li>
+        <li class="nav_txt"><a href="{{ url_for('events') }}">DOGAĐAJI</a></li>
     </ul>
 </header>
    
@@ -50,7 +50,7 @@
     <div class="container-md form_container">
       <div class="row">
         <!-- Picture of tables in the club-->
-        <div class="col-sm-6"><img src="../Images/Reservation images/image0_1.jpeg" height=600 width=500></div>
+        <div class="col-sm-6"><img src="../static/images/image0_1.jpeg" height=600 width=500></div>
         <div class="col-sm-5"><div class="container-sm p-5">
           <form>
               <div class="row">
@@ -151,7 +151,7 @@
 <footer id="kontakt" class="footer-distributed" style="border-top: grey; border-style: solid;">
     <div class="footer-left">
         <!-- Logo image -->
-        <h3><img src="../Images/Homepage images/LogoMakr (1).png"></h3>
+        <h3><img src="../static/images/LogoMakr (1).png"></h3>
 
         <br>
 
