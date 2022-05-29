@@ -1,6 +1,7 @@
 import email
 from email.message import Message
 from multiprocessing import connection
+from re import S
 import smtplib
 from unicodedata import name
 from flask import Flask, render_template, Request, request
@@ -137,6 +138,27 @@ def send_message_from_events_page():
         mail.send(email_msg)
         success_statement="Poruka uspješno poslana! Javit ćemo vam se u najkraćem mogućem roku."
         return render_template("events.html", success_statement=success_statement)
+
+# Code for subscribing to newsletter
+@app.route("/newsletter", methods=["POST"])
+def subscribe_to_newsletter():
+    # Adding users to newsletter_users table in database and sending confirmation mail to users
+    email=request.form.get("email_newsletter")
+    email_msg=Message("Alcatraz newsletter", sender="alcatrazclubzadar@gmail.com", recipients=[email])
+    email_msg.body="Hvala vam što ste se pretplatili na naš newsletter. \n \n Alcatraz team"
+    
+    if not email:
+        error_statement_newsletter="Morate unijeti e-mail adresu!"
+        return render_template("index.html", error_statement_newsletter=error_statement_newsletter)
+    else:
+        cursor = connection.cursor()
+        cursor.execute("INSERT INTO newsletter_users (email) VALUES ('%s')" %(email))
+        connection.commit()
+        cursor.close()
+        mail.send(email_msg)
+        statement="Uspješno ste se pretplatili na naš newsletter."
+        return render_template("index.html", statement=statement)
+ 
 
 if __name__=='__main__':
     app.run(debug=True)

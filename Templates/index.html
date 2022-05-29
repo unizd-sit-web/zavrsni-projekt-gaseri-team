@@ -103,6 +103,29 @@ source: foundation framework -->
     <a href="{{ url_for('gallery') }}"><button class="gal_button">POGLEDAJ CIJELU GALERIJU</button></a>
 </div>
 <br>
+
+<form action="\newsletter" method="post">
+    {% if error_statement_newsletter %}
+    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        {{error_statement_newsletter}}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    {% elif statement %}
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{statement}}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      {% endif %}
+    <div class="form-group">
+      <label for="exampleInputEmail1">Email address</label>
+      <input type="email" name="email_newsletter" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
 <div class="container-fluid newsletter_txt">
     <div class="row">
       <div class="col-md-8"><h1><b>PRETPLATI SE NA NEWSLETTER!</b></h1></div>
