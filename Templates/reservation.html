@@ -135,7 +135,8 @@
               <div>
                   <label>
                       Odaberi datum rezervacije: *
-                      <input type="date" name="date" value="2022-02-04" min="2022-01-01" max="2022-12-31" required>
+                      <!-- You can only reserve table for the next friday or saturday because of the club working time. Reservations for next weekend are opened every monday.-->
+                      <input type="date" name="date" value="2022-06-10" min="2022-06-10" max="2022-06-11" required>
                       <span class="validity"></span>
                     </label>
               </div>
