@@ -8,6 +8,8 @@ from flask import Flask, render_template, Request, request
 from flask_mysqldb import MySQL
 import MySQLdb as db_connect
 from flask_mail import Mail, Message
+import random
+from flask_sqlalchemy import SQLAlchemy
 
 app=Flask(__name__)
 
@@ -36,6 +38,19 @@ cursor.execute(''' CREATE TABLE IF NOT EXISTS newsletter_users(id BIGINT AUTO_IN
  
 #Closing the cursor
 cursor.close()
+
+#Connecting to database using SQLAlchemy
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:database99@localhost:3306/flask_project'
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+db=SQLAlchemy(app)
+
+class reservations(db.Model):
+    id=db.Column(db.Integer, primary_key=True)
+    date=db.Column(db.Date, nullable=False)
+    table_mark=db.Column(db.String(10), nullable=False)
+    name=db.Column(db.String(60), nullable=False)
+    email=db.Column(db.String(60), nullable=False)
+    remark=db.Column(db.String(255), nullable=False)
 
 @app.route("/")
 def index():
@@ -158,6 +173,29 @@ def subscribe_to_newsletter():
         mail.send(email_msg)
         statement="Uspješno ste se pretplatili na naš newsletter."
         return render_template("index.html", statement=statement)
+
+@app.route("/reservation/table", methods=["POST"])
+def table_reservation():
+    name=request.form.get("name")
+    surname=request.form.get("surname")
+    date=request.form.get("date")
+    table_mark=request.form.get("table_mark")
+    email_res=request.form.get("email_res")
+    remark=request.form.get("remark")
+    unique=False
+    while not unique:
+        id=random.randint(100001,999999)
+        exists = db.session.query(db.exists().where(reservations.id == id)).scalar()
+        if not exists:
+            unique=True
+    tables=[]
+    date_check=
+    reservation=reservations(id=id, date=date,table_mark=table_mark, name=name+" "+surname, email=email_res, remark=remark)
+    db.session.add(reservation)
+    db.session.commit()
+    older_statement="Uspješno ste rezervirali stol! Vaš broj rezervacije: "
+    return render_template("reservation.html", older_statement=older_statement, id_res=id)
+
  
 
 if __name__=='__main__':
