@@ -183,18 +183,29 @@ def table_reservation():
     email_res=request.form.get("email_res")
     remark=request.form.get("remark")
     unique=False
+    list_tables=[]
     while not unique:
         id=random.randint(100001,999999)
         exists = db.session.query(db.exists().where(reservations.id == id)).scalar()
         if not exists:
             unique=True
-    tables=[]
-    date_check=
-    reservation=reservations(id=id, date=date,table_mark=table_mark, name=name+" "+surname, email=email_res, remark=remark)
-    db.session.add(reservation)
-    db.session.commit()
-    older_statement="Uspješno ste rezervirali stol! Vaš broj rezervacije: "
-    return render_template("reservation.html", older_statement=older_statement, id_res=id)
+    exists2=bool(reservations.query.filter_by(date=date,table_mark=table_mark).first())
+    for mark in db.session.query(reservations.table_mark).filter_by(date=date):
+        list_tables.append(mark)
+    if exists2:
+        table_reserved_statement1="Stol "+ table_mark +" je već rezerviran za datum: "
+        table_reserved_statement2="Lista zauzetih stolova: "
+        table_reserved_statement3="Molimo odaberite neki drugi stol!"
+        return render_template("reservation.html", table_reserved_statement1=table_reserved_statement1,table_reserved_statement2=table_reserved_statement2,table_reserved_statement3=table_reserved_statement3,list_tables=list_tables, name=name, surname=surname, remark=remark, email_res=email_res, date=date, date_res=date)
+    else:
+        reservation=reservations(id=id, date=date,table_mark=table_mark, name=name+" "+surname, email=email_res, remark=remark)
+        db.session.add(reservation)
+        db.session.commit()
+        email_msg=Message("Alcatraz rezervacija", sender="alcatrazclubzadar@gmail.com", recipients=[email_res])
+        email_msg.body="Uspješno ste rezervirali stol za dan "+str(date)+"\nVaš broj rezervacije: "+ str(id)+"\nMolimo vas da u klub dođete najkasnije do 23:30 inaće će vaša rezervacija biti poništena. Hvala" +"\nVaš Alcatraz team"
+        mail.send(email_msg)
+        successfully_reserved_statement="Uspješno ste rezervirali stol! Vaš broj rezervacije: "
+        return render_template("reservation.html", successfully_reserved_statement=successfully_reserved_statement, id_res=id)
 
  
 

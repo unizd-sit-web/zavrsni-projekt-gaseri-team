@@ -50,27 +50,48 @@
         <!-- Picture of tables in the club-->
         <div class="col-sm-6"><img src="../static/images/image0_1.jpeg" height=600 width=500></div>
         <div class="col-sm-5"><div class="container-sm p-5">
-          <form>
+          {% block content %}
+          {% if table_reserved_statement1 %}
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+              {{table_reserved_statement1}} {{date_res}}
+              <br>
+              {{table_reserved_statement2}} {{list_tables}}
+              <br>
+              {{table_reserved_statement3}}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          {% elif successfully_reserved_statement %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+              {{successfully_reserved_statement}} {{id_res}}
+              <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+          {%endif%}
+          {% endblock content %}
+          <form action="/reservation/table" method="post">
               <div class="row">
                   <div class="col">
                       <label for="ime">Ime: *</label>
-                    <input type="text" class="form-control" id="ime" placeholder="Ime" required>
+                    <input type="text" class="form-control" id="ime" placeholder="Ime" name="name" required>
                   </div>
                   <div class="col">
                       <label for="prezime">Prezime: *</label>
-                    <input type="text" class="form-control" id="prezime" placeholder="Prezime" required>
+                    <input type="text" class="form-control" id="prezime" placeholder="Prezime" name="surname" required>
                   </div>
                 </div>
                 <br>
               <div class="form-group">
                 <label for="exampleFormControlInput1">E-mail adresa: *</label>
-                <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com" required>
+                <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="name@example.com" name="email_res" required>
               </div>
               <br>
               <!-- Select form for selection a table to reserve. Every option is one table from the picture-->
               <div class="form-group">
                 <label for="exampleFormControlSelect1">Odaberi stol: *</label>
-                <select class="form-control" id="exampleFormControlSelect1">
+                <select class="form-control" id="exampleFormControlSelect1" name="table_mark">
                   <option>B1</option>
                   <option>B2</option>
                   <option>B4</option>
@@ -114,26 +135,20 @@
               <div>
                   <label>
                       Odaberi datum rezervacije: *
-                      <input type="date" name="party" value="2022-02-04" min="2022-01-01" max="2022-12-31" required>
+                      <input type="date" name="date" value="2022-02-04" min="2022-01-01" max="2022-12-31" required>
                       <span class="validity"></span>
                     </label>
               </div>
               <br>
               <div class="form-group">
                 <label for="exampleFormControlTextarea1">Napomena:</label>
-                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3" name="remark"></textarea>
               </div>
               <br>
               <div class="form-check">
-                  <input class="form-check-input" type="checkbox" value="" id="invalidCheck2" required>
+                  <input class="form-check-input" type="checkbox" value="" id="invalidCheck2" name="check_older">
                   <label class="form-check-label" for="invalidCheck2">
                     Potvrđujem da sam stariji od 18 godina. *
-                  </label>
-                </div>
-                <div class="form-check">
-                  <input class="form-check-input" type="checkbox" value="" id="invalidCheck2">
-                  <label class="form-check-label" for="invalidCheck2">
-                    Pretplati se na newsletter!
                   </label>
                 </div>
                 <br>
