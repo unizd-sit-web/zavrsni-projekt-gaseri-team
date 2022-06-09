@@ -71,6 +71,13 @@
             </div>
           {%endif%}
           {% endblock content %}
+          V - visoki stol
+          <br>
+          S - VIP separe
+          <br>
+          B - PREMIUM VIP separe
+          <br>
+          <br>
           <form action="/reservation/table" method="post">
               <div class="row">
                   <div class="col">
@@ -147,7 +154,7 @@
               </div>
               <br>
               <div class="form-check">
-                  <input class="form-check-input" type="checkbox" value="" id="invalidCheck2" name="check_older">
+                  <input class="form-check-input" type="checkbox" value="" id="invalidCheck2" name="check_older" required>
                   <label class="form-check-label" for="invalidCheck2">
                     Potvrđujem da sam stariji od 18 godina. *
                   </label>

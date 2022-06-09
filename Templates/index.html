@@ -18,7 +18,7 @@
 
 <!-- Background which is formatted by a css class called bg -->
 <body class=bg>
-    <header class="header">
+    <header class="header" style="z-index: 2;">
       <!-- Logo picture with link to the home page -->
       <h1 class="logo"><a href="{{ url_for('index') }}"><img src="../static/images/LogoMakr (1).png"></a></h1>
       <ul class="main-nav">
@@ -105,6 +105,7 @@ source: foundation framework -->
 <br>
 
 <form action="\newsletter" method="post">
+    <div class="container-md" style="z-index: 1;">
     {% if error_statement_newsletter %}
     <div class="alert alert-warning alert-dismissible fade show" role="alert">
         {{error_statement_newsletter}}
@@ -112,6 +113,13 @@ source: foundation framework -->
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
+    {% elif exists_statement %}
+      <div class="alert alert-warning alert-dismissible fade show" role="alert">
+          {{exists_statement}}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+    </div>
     {% elif statement %}
     <div class="alert alert-success alert-dismissible fade show" role="alert">
         {{statement}}
@@ -119,19 +127,18 @@ source: foundation framework -->
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      {% endif %}
-    <div class="form-group">
-      <label for="exampleInputEmail1">Email address</label>
-      <input type="email" name="email_newsletter" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+    {% endif %}
     </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <div class="form-group newsletter_txt container-md">
+        <div class="row"><h2>Pretplati se na newsletter:</h2></div>
+        <br>
+        <div class="row">
+            <div class="col-md-2"><label for="exampleInputEmail1"><h5>Email adresa:</h5></label></div>
+            <div class="col-md-6"><input type="email" name="email_newsletter" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"></div>
+            <div class="col-6 col-md-4"><button type="submit" class="gal_button" >PRETPLATI SE</button></div>
+        </div>
+    </div>
   </form>
-<div class="container-fluid newsletter_txt">
-    <div class="row">
-      <div class="col-md-8"><h1><b>PRETPLATI SE NA NEWSLETTER!</b></h1></div>
-      <div class="col-6 col-md-4"><button class="gal_button">PRETPLATI SE</button></div>
-    </div>
-</div>
 <br>
 
 
