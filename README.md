@@ -9,6 +9,9 @@ Još jedna NAPOMENA: Stranica galerije nekad učita slike odmah, a nekad tek nak
 
 ## Upute za pokretanje putem terminala:
 **1. python -m venv venv**
+
 **2. venv/Scripts/Activate.ps1** 
+
 **3. pip install -r requirements.txt**
+
 **4. python app.py**
