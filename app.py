@@ -1,12 +1,11 @@
 from email.message import Message
 from multiprocessing import connection
 from re import S
-from flask import Flask, render_template, Request, request, session
+from flask import Flask, render_template, request
 import MySQLdb as db_connect
 from flask_mail import Mail, Message
 import random
 from flask_sqlalchemy import SQLAlchemy
-
 app=Flask(__name__)
 
 # Database configuration
