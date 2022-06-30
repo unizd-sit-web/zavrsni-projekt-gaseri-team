@@ -10,9 +10,9 @@ app=Flask(__name__)
 
 # Database configuration
 host_name="sql11.freemysqlhosting.net"
-db_user="sql11498777"
-db_password="zxapYdipPm"
-db_name="sql11498777"
+db_user="sql11503229"
+db_password="JjhlfA4TFK"
+db_name="sql11503229"
 
 # E-mail configuration
 app.config['MAIL_SERVER']='smtp.gmail.com'
@@ -37,7 +37,7 @@ cursor.execute(''' CREATE TABLE IF NOT EXISTS reservations(id BIGINT PRIMARY KEY
 cursor.close()
 
 #Connecting to database using SQLAlchemy
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://sql11498777:zxapYdipPm@sql11.freemysqlhosting.net:3306/sql11498777'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://sql11503229:JjhlfA4TFK@sql11.freemysqlhosting.net:3306/sql11503229'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db=SQLAlchemy(app)
 
