@@ -1,19 +1,15 @@
 from email.message import Message
 from multiprocessing import connection
 from re import S
-from flask import Flask, render_template, Request, request, session
-import MySQLdb as db_connect
+from flask import Flask, render_template, request
 from flask_mail import Mail, Message
 import random
 from flask_sqlalchemy import SQLAlchemy
+import sqlite3
 
 app=Flask(__name__)
 
 # Database configuration
-host_name="sql11.freemysqlhosting.net"
-db_user="sql11498777"
-db_password="zxapYdipPm"
-db_name="sql11498777"
 
 # E-mail configuration
 app.config['MAIL_SERVER']='smtp.gmail.com'
@@ -25,20 +21,20 @@ app.config['MAIL_USE_SSL'] = True
 
 mail=Mail(app)
 #Creating a connection to the database
-connection=db_connect.connect(host=host_name,user=db_user,password=db_password,database=db_name)
+connection=sqlite3.connect("alcatraz_database.db")
 
 #Creating a connection cursor
 cursor = connection.cursor()
 
 #Executing SQL Statements
 cursor.execute(''' CREATE TABLE IF NOT EXISTS newsletter_users(id BIGINT AUTO_INCREMENT PRIMARY KEY, email VARCHAR(60) NOT NULL UNIQUE) ''')
-cursor.execute(''' CREATE TABLE IF NOT EXISTS reservations(id BIGINT PRIMARY KEY, date DATE NOT NULL, table_mark VARCHAR(10) NOT NULL, name VARCHAR(60) NOT NULL, email VARCHAR(60) NOT NULL, remark VARCHAR(255)) ''')
+cursor.execute(''' CREATE TABLE IF NOT EXISTS reservations(id BIGINT PRIMARY KEY, date VARCHAR(10) NOT NULL, table_mark VARCHAR(10) NOT NULL, name VARCHAR(60) NOT NULL, email VARCHAR(60) NOT NULL, remark VARCHAR(255)) ''')
  
 #Closing the cursor
 cursor.close()
 
 #Connecting to database using SQLAlchemy
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://sql11498777:zxapYdipPm@sql11.freemysqlhosting.net:3306/sql11498777'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///alcatraz_database.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db=SQLAlchemy(app)
 
@@ -48,7 +44,7 @@ class newsletter_users(db.Model):
 
 class reservations(db.Model):
     id=db.Column(db.Integer, primary_key=True)
-    date=db.Column(db.Date, nullable=False)
+    date=db.Column(db.String(10), nullable=False)
     table_mark=db.Column(db.String(10), nullable=False)
     name=db.Column(db.String(60), nullable=False)
     email=db.Column(db.String(60), nullable=False)
@@ -75,14 +71,12 @@ def events():
     return render_template('events.html')
 
 
-# Sending e-mails using contact form from every page: homepage, aboutus page, events page, reservation page and gallery page
 # Code for sending e-mail using contact form on the homepage
 @app.route("/message", methods=["POST"])
 def send_message_from_homepage():
     email=request.form.get("email")
     msg=request.form.get("message")
     email_msg=Message("Alcatraz kontakt", sender=email, recipients=["alcatrazclubzadar@gmail.com"])
-    print(email)
     email_msg.body=msg
     
     if not email or not msg:
@@ -162,8 +156,6 @@ def send_message_from_events_page():
 def subscribe_to_newsletter():
     # Adding users to newsletter_users table in database and sending confirmation mail to users
     email=request.form.get("email_newsletter")
-    email_msg=Message("Alcatraz newsletter", sender="alcatrazclubzadar@gmail.com", recipients=[email])
-    email_msg.body="Hvala vam što ste se pretplatili na naš newsletter. \n \n Alcatraz team"
     # Check if email already exists in database
     exists = db.session.query(db.exists().where(newsletter_users.email == email)).scalar()
     
@@ -177,6 +169,9 @@ def subscribe_to_newsletter():
         newsletter_user=newsletter_users(email=email)
         db.session.add(newsletter_user)
         db.session.commit()
+        email_msg=Message("Alcatraz newsletter", sender="alcatrazclubzadar@gmail.com", recipients=[email])
+        email_msg.body="Hvala vam što ste se pretplatili na naš newsletter. \n \n Alcatraz team"
+        mail.send(email_msg)
         statement="Uspješno ste se prijavili na newsletter."
         return render_template("index.html", statement=statement)
 
